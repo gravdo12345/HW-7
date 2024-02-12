@@ -1,5 +1,4 @@
 package org.example;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,14 +16,12 @@ public class DatabaseQueryService {
         this.connection = connection;
     }
 
+    // Метод для читання(куріння вбиває, ніхто це не читає)
     public List<ProjectInfo> findLongestProject() {
-        return executeQuery("find_longest_project.sql");
-    }
-
-    private List<ProjectInfo> executeQuery(String sqlFilePath) {
-        List<ProjectInfo> results = new ArrayList<>();
+        List<ProjectInfo> projects = new ArrayList<>();
 
         try {
+            String sqlFilePath = "find_longest_project.sql";
             String sqlQuery = readSqlFile(sqlFilePath);
 
             try (PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
@@ -33,23 +30,24 @@ public class DatabaseQueryService {
                         String projectName = resultSet.getString("PROJECT_NAME");
                         int monthCount = resultSet.getInt("MONTH_COUNT");
 
+                        // Создаємо об'єкт ProjectInfo
                         ProjectInfo projectInfo = new ProjectInfo(projectName, monthCount);
-                        results.add(projectInfo);
+                        projects.add(projectInfo);
                     }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return results;
+        return projects;
     }
 
-    // це для читання(букварик типу, ну, жарт короче)
+    // Це для зчитування(свобод затриманного)
     private String readSqlFile(String sqlFilePath) throws IOException {
         return Files.readString(Path.of(sqlFilePath));
     }
 
-    // передає інформацію(через границю)
+    // Клас, що представляє інформацію(ну типу видумовує)
     public static class ProjectInfo {
         private final String projectName;
         private final int monthCount;
