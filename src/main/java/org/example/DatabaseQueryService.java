@@ -16,7 +16,7 @@ public class DatabaseQueryService {
         this.connection = connection;
     }
 
-
+    // робота PreparedStatement
     private ResultSet executePreparedStatement(String sqlFilePath, String... params) throws IOException {
         String sqlQuery = readSqlFile(sqlFilePath);
         try {
@@ -31,7 +31,7 @@ public class DatabaseQueryService {
         }
     }
 
-    // читає SQL
+    // читає файли(букварик містний)
     private String readSqlFile(String sqlFilePath) throws IOException {
         try {
             return Files.readString(Path.of(sqlFilePath));
@@ -72,6 +72,7 @@ public class DatabaseQueryService {
         }
         return clients;
     }
+
 
     public List<WorkerInfo> findMaxSalaryWorker() {
         List<WorkerInfo> workers = new ArrayList<>();
@@ -167,11 +168,11 @@ public class DatabaseQueryService {
 
         public WorkerInfo(String workerName, int salary) {
             this.workerName = workerName;
-            this.workerType = "Salary";
-            this.birthday = Integer.toString(salary);
+            this.workerType = "Worker with highest salary";
+            this.birthday = "";
         }
 
-        public WorkerInfo(String workerName, String workerType, String birthday) {
+        public WorkerInfo(String workerName, String birthday, String workerType) {
             this.workerName = workerName;
             this.workerType = workerType;
             this.birthday = birthday;
